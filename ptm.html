@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="stylessheet.css">
+</head>
+<body>
+    <header>
+        <h1>Personal Task Manager</h1>
+    </header>
+
+    <main>
+        <h2>My Tasks</h2>
+        <ul class="task-list" id="task-list">
+            <li class="task-item">
+                Finish homework 
+                <button class="edit-btn" >Edit</button>
+                <button class="delete-btn" >Delete</button>
+            </li>
+            <li class="task-item">
+                Go grocery shopping 
+                <button class="edit-btn" >Edit</button>
+                <button class="delete-btn" >Delete</button>
+            </li>
+            <li class="task-item">
+                Prepare for the meeting 
+                <button class="edit-btn" >Edit</button>
+                <button class="delete-btn" >Delete</button>
+            </li>
+           
+        </ul>
+
+        <div id="add-task-container">
+            <input id="task-input" type="text" placeholder="Type Something...">
+            <button id="add-task-btn" onclick="fun();">Add Task</button>
+        </div>
+ 
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Personal Task Manager</p>
+    </footer>
+    <script >
+
+        function fun()
+        {
+            const input=document.getElementById('task-input').value;
+
+            if (input==='') return;
+            const li=document.createElement("li");
+            li.classList.add("task-item");
+            const ul=document.getElementById('task-list');
+            li.innerHTML=` ${input} 
+            <button class="edit-btn" >Edit</button>
+            <button class="delete-btn" >Delete</button>`;
+            
+            ul.appendChild(li);
+            document.getElementById('task-input').value='';
+
+        }
+
+        document.getElementById('task-input').addEventListener('keydown', 
+        function(event)
+         {
+            if (event.key === "Enter")
+             {
+                fun();
+            }
+        });
+         
+        document.getElementById('task-list').addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('delete-btn')) {
+                const taskItem = e.target.parentElement;
+                taskItem.remove();
+            } else if (e.target && e.target.classList.contains('edit-btn')) {
+                const taskItem = e.target.parentElement;
+                const taskText = taskItem.firstChild.textContent.trim();
+                taskItem.innerHTML = `<input type="text" value="${taskText}" class="edit-input" style=border:none;outline:none;background-color:transparent;flex:1;> 
+                <button class="save-btn" style=background-color:#007BFF;border-style:none;color:white;padding:6px;border-radius:5px;cursor:pointer;display:flex;>Save</button>`;
+            } else if (e.target && e.target.classList.contains('save-btn')) {
+                const taskItem = e.target.parentElement;
+                const newText = taskItem.querySelector('.edit-input').value;
+                taskItem.innerHTML = `${newText} 
+                <button class="edit-btn">Edit</button>
+                <button class="delete-btn">Delete</button>`;
+            }
+        });
+
+
+
+    </script>
+</body>
+</html>
